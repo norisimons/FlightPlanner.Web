@@ -15,7 +15,7 @@ namespace FlightPlanner.Web.Controllers
         [HttpPost]
         public IActionResult Clear()
         {
-            FlightStorage.ClearFlight();
+            FlightStorage.ClearFlight(); //jānodzeesh visi flaigti un airporti
             return Ok();
         }
     }

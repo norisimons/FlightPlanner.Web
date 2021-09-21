@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using FlightPlanner.Web.Authentication;
+using FlightPlanner.Web.DbContext;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightPlanner.Web
 {
@@ -35,6 +37,9 @@ namespace FlightPlanner.Web
 
             services.AddAuthentication("BasicAuthentication")
             .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
+            services.AddDbContext<FlightPlannerDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("flight-planner")));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
