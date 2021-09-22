@@ -1,7 +1,9 @@
-﻿using FlightPlanner.Web.Models;
+﻿using FlightPlanner.Web.DbContext;
+using FlightPlanner.Web.Models;
 using FlightPlanner.Web.Storage;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,12 +15,18 @@ namespace FlightPlanner.Web.Controllers
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        private readonly FlightPlannerDbContext _context;
+        public CustomerController(FlightPlannerDbContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         [Route("airports")]
         public IActionResult GetAirport(string search)
         {
-            var airportDescription = FlightStorage.GetAirportName(search);
+            //var airportDescription = FlightStorage.GetAirportName(search);
+            var airportDescription = FlightStorage.GetAirportName(search, _context);
             return airportDescription.Length == 0 ? Ok(search) : Ok(airportDescription);
         }
 
@@ -26,7 +34,14 @@ namespace FlightPlanner.Web.Controllers
         [Route("flights/{id}")]
         public IActionResult GetFlight(int id)
         {
-            var flight = FlightStorage.GetById(id);
+            //var flight = FlightStorage.GetById(id);
+            ////var flight = FlightStorage.GetById(id, _context);  //J
+
+            var flight = _context.Flights
+                    .Include(a => a.To)
+                    .Include(a => a.From)
+                    .SingleOrDefault(f => f.Id == id);
+
             if (flight == null)
                 return NotFound();
             return Ok(flight);
@@ -41,7 +56,9 @@ namespace FlightPlanner.Web.Controllers
                 return BadRequest();
             }
 
-            var x = FlightStorage.FindFlight(flight);
+            //var x = FlightStorage.FindFlight(flight);
+
+            var x = FlightStorage.FindFlight(flight, _context);
             return Ok(x);
         }
     }

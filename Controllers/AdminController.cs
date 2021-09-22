@@ -22,7 +22,9 @@ namespace FlightPlanner.Web.Controllers
         {
             _context = context;
         }
+
         private static readonly object _locker = new();
+
         [HttpGet]
         [Route("flights/{id}")]
         public IActionResult GetFlight(int id)
@@ -49,9 +51,14 @@ namespace FlightPlanner.Web.Controllers
             {
                 if (!FlightStorage.IsValid(flight))
                     return BadRequest();
-
+                ////if (FlightStorage.Exists(_context)) ////////// varbūt tomēr vajadzēs
+                //////if (!_context.Exists(flight))
                 if (FlightStorage.Exists(flight))
+                {
                     return Conflict();
+                    //////return Conflict(flight);
+                }
+
 
                 //FlightStorage.AddFlight(flight);
                 _context.Flights.Add(flight);
@@ -67,8 +74,6 @@ namespace FlightPlanner.Web.Controllers
         {
             lock (_locker)
             {
-                //var flight = _context.Flights.SingleOrDefault(f => f.Id == id);
-
                 var flight = _context.Flights
                     .Include(a => a.To)
                     .Include(a => a.From)
@@ -83,7 +88,7 @@ namespace FlightPlanner.Web.Controllers
                 }
 
                 return Ok();
-                //FlightStorage.DeleteFlight(id);
+                //FlightStorage.DeleteFlight(id); 
                 //return Ok();
             }
         }
