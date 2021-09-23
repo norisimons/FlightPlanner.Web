@@ -35,7 +35,7 @@ namespace FlightPlanner.Web.Controllers
         public IActionResult GetFlight(int id)
         {
             //var flight = FlightStorage.GetById(id);
-            ////var flight = FlightStorage.GetById(id, _context);  //J
+            ////var flight = FlightStorage.GetById(id, _context); 
 
             var flight = _context.Flights
                     .Include(a => a.To)

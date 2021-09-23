@@ -51,9 +51,9 @@ namespace FlightPlanner.Web.Controllers
             {
                 if (!FlightStorage.IsValid(flight))
                     return BadRequest();
-                ////if (FlightStorage.Exists(_context)) ////////// varbūt tomēr vajadzēs
-                //////if (!_context.Exists(flight))
-                if (FlightStorage.Exists(flight))
+                if (FlightStorage.Exists(flight, _context)) ////////// 
+                //////if (_context.Exists(flight))
+                //if (FlightStorage.Exists(flight))
                 {
                     return Conflict();
                     //////return Conflict(flight);
@@ -89,7 +89,7 @@ namespace FlightPlanner.Web.Controllers
 
                 return Ok();
                 //FlightStorage.DeleteFlight(id); 
-                //return Ok();
+                //return Ok(); 
             }
         }
     }
