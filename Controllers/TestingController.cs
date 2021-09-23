@@ -1,11 +1,5 @@
 ﻿using FlightPlanner.Web.DbContext;
-using FlightPlanner.Web.Storage;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FlightPlanner.Web.Controllers
 {
@@ -23,8 +17,6 @@ namespace FlightPlanner.Web.Controllers
         [HttpPost]
         public IActionResult Clear()
         {
-            //FlightStorage.ClearFlight(); //jānodzeesh visi flaigti un airporti
-            //return Ok();
             foreach (var entity in _context.Airport)
                 _context.Airport.Remove(entity);
 

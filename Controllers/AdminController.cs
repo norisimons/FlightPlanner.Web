@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FlightPlanner.Web.Storage;
 using FlightPlanner.Web.Models;
 using FlightPlanner.Web.DbContext;
@@ -29,14 +25,12 @@ namespace FlightPlanner.Web.Controllers
         [Route("flights/{id}")]
         public IActionResult GetFlight(int id)
         {
-
             lock (_locker)
             {
                 var flight = _context.Flights
                     .Include(a => a.To)
                     .Include(a => a.From)
                     .SingleOrDefault(f => f.Id == id);
-                //var flight = FlightStorage.GetById(id);
                 if (flight == null)
                     return NotFound();
                 return Ok(flight);
@@ -51,19 +45,13 @@ namespace FlightPlanner.Web.Controllers
             {
                 if (!FlightStorage.IsValid(flight))
                     return BadRequest();
-                if (FlightStorage.Exists(flight, _context)) ////////// 
-                //////if (_context.Exists(flight))
-                //if (FlightStorage.Exists(flight))
+                if (FlightStorage.Exists(flight, _context))
                 {
                     return Conflict();
-                    //////return Conflict(flight);
                 }
 
-
-                //FlightStorage.AddFlight(flight);
                 _context.Flights.Add(flight);
                 _context.SaveChanges();
-
                 return Created("", flight);
             }
         }
@@ -86,10 +74,7 @@ namespace FlightPlanner.Web.Controllers
                     _context.Flights.Remove(flight);
                     _context.SaveChanges();
                 }
-
                 return Ok();
-                //FlightStorage.DeleteFlight(id); 
-                //return Ok(); 
             }
         }
     }
