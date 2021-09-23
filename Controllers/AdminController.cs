@@ -81,8 +81,8 @@ namespace FlightPlanner.Web.Controllers
 
                 if (flight != null)
                 {
-                    _context.Airports.Remove(flight.To);
-                    _context.Airports.Remove(flight.From);
+                    _context.Airport.Remove(flight.To);
+                    _context.Airport.Remove(flight.From);
                     _context.Flights.Remove(flight);
                     _context.SaveChanges();
                 }

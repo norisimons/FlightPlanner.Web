@@ -25,8 +25,8 @@ namespace FlightPlanner.Web.Controllers
         {
             //FlightStorage.ClearFlight(); //jānodzeesh visi flaigti un airporti
             //return Ok();
-            foreach (var entity in _context.Airports)
-                _context.Airports.Remove(entity);
+            foreach (var entity in _context.Airport)
+                _context.Airport.Remove(entity);
 
             foreach (var entity in _context.Flights)
                 _context.Flights.Remove(entity);

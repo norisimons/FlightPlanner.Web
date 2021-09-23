@@ -17,14 +17,14 @@ namespace FlightPlanner.Web.Storage
         private static int _id = 1;
         private static readonly object _locker = new();
 
-        //public static Flight GetById(int id, FlightPlannerDbContext context)
-        //{
-        //    //return _flights.SingleOrDefault(f => f.Id == id);
-        //    return context.Flights
-        //    .Include(a => a.To)
-        //    .Include(a => a.From)
-        //    .SingleOrDefault(f => f.Id == id);
-        //}
+        public static Flight GetById(int id, FlightPlannerDbContext context)
+        {
+            //return _flights.SingleOrDefault(f => f.Id == id);
+            return context.Flights
+            .Include(a => a.To)
+            .Include(a => a.From)
+            .SingleOrDefault(f => f.Id == id);
+        }
 
         //public static void ClearFlight()
         //{
