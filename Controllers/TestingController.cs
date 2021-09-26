@@ -1,10 +1,5 @@
-﻿using FlightPlanner.Web.Storage;
-using Microsoft.AspNetCore.Http;
+﻿using FlightPlanner.Web.DbContext;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlightPlanner.Web.Controllers
 {
@@ -12,11 +7,22 @@ namespace FlightPlanner.Web.Controllers
     [ApiController]
     public class TestingController : ControllerBase
     {
+        private readonly FlightPlannerDbContext _context;
+        public TestingController(FlightPlannerDbContext context)
+        {
+            _context = context;
+        }
+
         [Route("clear")]
         [HttpPost]
         public IActionResult Clear()
         {
-            FlightStorage.ClearFlight();
+            foreach (var entity in _context.Airport)
+                _context.Airport.Remove(entity);
+
+            foreach (var entity in _context.Flights)
+                _context.Flights.Remove(entity);
+            _context.SaveChanges();
             return Ok();
         }
     }

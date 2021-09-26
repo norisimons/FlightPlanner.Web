@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -59,7 +57,6 @@ namespace FlightPlanner.Web.Authentication
             var identity = new ClaimsIdentity(claims, Scheme.Name);
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
-
             return AuthenticateResult.Success(ticket);
         }
 
