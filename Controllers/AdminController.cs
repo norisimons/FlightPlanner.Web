@@ -1,7 +1,5 @@
 
-using Microsoft.AspNetCore.Authorization;
-using FlightPlanner.Web.Storage;
-using FlightPlanner.Web.Models;
+
 namespace FlightPlanner.Web.Controllers
 {
     [Authorize]
