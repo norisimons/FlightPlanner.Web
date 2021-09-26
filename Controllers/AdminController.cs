@@ -6,8 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlightPlanner.Web.Storage;
 using FlightPlanner.Web.Models;
-using FlightPlanner.Web.DbContext;
-using Microsoft.EntityFrameworkCore;
+
 
 namespace FlightPlanner.Web.Controllers
 {
