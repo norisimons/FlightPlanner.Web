@@ -1,5 +1,3 @@
-
-
 namespace FlightPlanner.Web.Controllers
 {
     [Authorize]
