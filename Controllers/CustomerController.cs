@@ -1,6 +1,3 @@
-using FlightPlanner.Web.Storage;
-using Microsoft.AspNetCore.Mvc;
-
 namespace FlightPlanner.Web.Controllers
 {
     [Route("api")]
