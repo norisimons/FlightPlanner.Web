@@ -10,24 +10,14 @@ namespace FlightPlanner.Web.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly FlightPlannerDbContext _context;
-        public AdminController(FlightPlannerDbContext context)
-        {
-            _context = context;
-        }
-
         private static readonly object _locker = new();
-
         [HttpGet]
         [Route("flights/{id}")]
         public IActionResult GetFlight(int id)
         {
             lock (_locker)
             {
-                var flight = _context.Flights
-                    .Include(a => a.To)
-                    .Include(a => a.From)
-                    .SingleOrDefault(f => f.Id == id);
+                var flight = FlightStorage.GetById(id);
                 if (flight == null)
                     return NotFound();
                 return Ok(flight);
@@ -42,13 +32,11 @@ namespace FlightPlanner.Web.Controllers
             {
                 if (!FlightStorage.IsValid(flight))
                     return BadRequest();
-                if (FlightStorage.Exists(flight, _context))
-                {
-                    return Conflict();
-                }
 
-                _context.Flights.Add(flight);
-                _context.SaveChanges();
+                if (FlightStorage.Exists(flight))
+                    return Conflict();
+
+                FlightStorage.AddFlight(flight);
                 return Created("", flight);
             }
         }
@@ -59,18 +47,7 @@ namespace FlightPlanner.Web.Controllers
         {
             lock (_locker)
             {
-                var flight = _context.Flights
-                    .Include(a => a.To)
-                    .Include(a => a.From)
-                    .SingleOrDefault(f => f.Id == id);
-
-                if (flight != null)
-                {
-                    _context.Airport.Remove(flight.To);
-                    _context.Airport.Remove(flight.From);
-                    _context.Flights.Remove(flight);
-                    _context.SaveChanges();
-                }
+                FlightStorage.DeleteFlight(id);
                 return Ok();
             }
         }
